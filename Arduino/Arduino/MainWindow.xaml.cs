@@ -36,21 +36,24 @@ namespace Arduino
         {
             try
             {
-                currentPort.Open();
-                System.Threading.Thread.Sleep(1000);
-                // небольшая пауза, ведь SerialPort не терпит суеты
-                currentPort.Write("abc");
-                string returnMessage = currentPort.ReadLine();
-                currentPort.Close();
-                // необходимо чтобы void loop() в скетче содержал код Serial.println("Info from Arduino");
-                if (!String.IsNullOrEmpty(returnMessage))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                //currentPort.Open();
+                //System.Threading.Thread.Sleep(1000);
+                //// небольшая пауза, ведь SerialPort не терпит суеты
+                //byte[] array = new byte[128];
+                //array[0] = 1;
+                //currentPort.Write(array, 0, array.Length);
+                //string returnMessage = currentPort.ReadLine();
+                //currentPort.Close();
+                //// необходимо чтобы void loop() в скетче содержал код Serial.println("Info from Arduino");
+                //if (!String.IsNullOrEmpty(returnMessage))
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
+                return true;
             }
             catch (Exception e)
             {
@@ -65,15 +68,17 @@ namespace Arduino
                 // удалим накопившееся в буфере
                 currentPort.DiscardInBuffer();
                 // считаем последнее значение 
-                string strFromPort = currentPort.ReadLine();
-                //lblPortData.Dispatcher.BeginInvoke(new updateDelegate(updateTextBox), strFromPort);
+                byte[] array = new byte[128];
+                currentPort.Read(array, 0, 128);
+                //arduinoResponse.Dispatcher.BeginInvoke(new updateDelegate(updateTextBox), strFromPort);
+                var a = 10;
             }
             catch { }
         }
 
         private void updateTextBox(string txt)
         {
-            //lblPortData.Content = txt;
+            arduinoResponse.Content = txt;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
