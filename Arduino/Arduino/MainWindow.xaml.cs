@@ -25,7 +25,8 @@ namespace Arduino
     {
         Timer aTimer;
         SerialPort currentPort;
-        byte[] currentFile = new byte[128];
+        byte[] currentFile = new byte[12];
+        byte[] currentByte = new byte[12];
         private delegate void updateDelegate(string txt);
         public MainWindow()
         {
@@ -66,12 +67,17 @@ namespace Arduino
             try // так как после закрытия окна таймер еще может выполнится или предел ожидания может быть превышен
             {
                 // удалим накопившееся в буфере
-                currentPort.DiscardInBuffer();
+                //currentPort.DiscardInBuffer();
                 // считаем последнее значение 
-                byte[] array = new byte[128];
-                currentPort.Read(array, 0, 128);
-                //arduinoResponse.Dispatcher.BeginInvoke(new updateDelegate(updateTextBox), strFromPort);
-                var a = 10;
+                var num = 0;
+                byte[] array = new byte[12];
+                num = currentPort.Read(array, 0, 12);
+
+                //var num1 = currentPort.Read(array, 1, 12);
+                //var num2 = currentPort.Read(array, 2, 12);
+                var a = currentPort.BytesToRead;
+                currentByte = array;
+                //arduinoResponse.Dispatcher.BeginInvoke(new updateDelegate(updateTextBox), array.ToString());
             }
             catch { }
         }
@@ -116,7 +122,7 @@ namespace Arduino
             }
             catch { }
 
-            aTimer = new System.Timers.Timer(1000);
+            aTimer = new System.Timers.Timer(5000);
             aTimer.Elapsed += OnTimedEvent;
             aTimer.AutoReset = true;
             aTimer.Enabled = true;
@@ -124,6 +130,7 @@ namespace Arduino
 
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            currentPort.DiscardInBuffer();
             aTimer.Enabled = false;
             currentPort.Close();
         }
@@ -144,7 +151,13 @@ namespace Arduino
 
         private void btnHash_Click(object sender, RoutedEventArgs e)
         {
-
+            GOST G = new GOST(256);
+            GOST G512 = new GOST(512);
+            byte[] message = currentFile;
+            byte[] res = G.GetHash(message);
+            byte[] res2 = G512.GetHash(message);
+            string h256 = BitConverter.ToString(res);
+            string h512 = BitConverter.ToString(res2);
         }
 
         private void btnArduino_Click(object sender, RoutedEventArgs e)
