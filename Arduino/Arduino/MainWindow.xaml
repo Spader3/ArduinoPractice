@@ -5,14 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Arduino"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="Программа для работы с Ардуино" Height="450" Width="800"
         Loaded="Window_Loaded"
         Closing="Window_Closing_1">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Label x:Name="lblPortData" FontSize="48" HorizontalAlignment="Center" Margin="0,20,0,0">Нет данных</Label>
-            <Button x:Name="btnOne" Click="btnOne_Click" Width="100" Height="30" Margin="0,10,0,0">Послать 1</Button>
-            <Button x:Name="btnZero" Click="btnZero_Click" Width="100" Height="30" Margin="0,10,0,0">Послать 0</Button>
+            <Label FontSize="20" HorizontalAlignment="Center" Margin="5">Перетащите файл сюда</Label>
+            <Canvas Width="100" Height="50" Background="LightGray" AllowDrop="True" Drop="Canvas_Drop"></Canvas>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label HorizontalAlignment="Center" FontSize="10">Сейчас загружен файл:</Label>
+                <Label Name="currentFileName"></Label>
+            </StackPanel>
+            <Button x:Name="btnHash" Click="btnHash_Click" Width="150" Height="30" Margin="5">Рассчитать хэш сумму</Button>
+            <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
+                <Label HorizontalAlignment="Center" FontSize="10">Хэш-сумма:</Label>
+                <Label Name="hashSumm"></Label>
+            </StackPanel>
+            <Button x:Name="btnArduino" Click="btnArduino_Click" Width="200" Height="30" Margin="5">Отправить файл на ардуино</Button>
+            <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
+                <Label HorizontalAlignment="Center" FontSize="10">Ответ от ардуино:</Label>
+                <Label Name="arduinoResponse"></Label>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

@@ -25,6 +25,7 @@ namespace Arduino
     {
         Timer aTimer;
         SerialPort currentPort;
+        byte[] currentFile = new byte[128];
         private delegate void updateDelegate(string txt);
         public MainWindow()
         {
@@ -41,7 +42,6 @@ namespace Arduino
                 currentPort.Write("abc");
                 string returnMessage = currentPort.ReadLine();
                 currentPort.Close();
-
                 // необходимо чтобы void loop() в скетче содержал код Serial.println("Info from Arduino");
                 if (!String.IsNullOrEmpty(returnMessage))
                 {
@@ -66,26 +66,14 @@ namespace Arduino
                 currentPort.DiscardInBuffer();
                 // считаем последнее значение 
                 string strFromPort = currentPort.ReadLine();
-                lblPortData.Dispatcher.BeginInvoke(new updateDelegate(updateTextBox), strFromPort);
+                //lblPortData.Dispatcher.BeginInvoke(new updateDelegate(updateTextBox), strFromPort);
             }
             catch { }
         }
 
         private void updateTextBox(string txt)
         {
-            lblPortData.Content = txt;
-        }
-        private void btnOne_Click(object sender, RoutedEventArgs e)
-        {
-            if (!currentPort.IsOpen) return;
-            byte[] kek = File.ReadAllBytes("d:\\gg.txt");
-            currentPort.Write(kek, 0, kek.Length);
-        }
-
-        private void btnZero_Click(object sender, RoutedEventArgs e)
-        {
-            if (!currentPort.IsOpen) return;
-            currentPort.Write("abcdef");
+            //lblPortData.Content = txt;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -133,6 +121,32 @@ namespace Arduino
         {
             aTimer.Enabled = false;
             currentPort.Close();
+        }
+
+        private void Canvas_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // Note that you can have more than one file.
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                // Assuming you have one file that you care about, pass it off to whatever
+                // handling code you have defined.
+                currentFile = File.ReadAllBytes(files[0]);
+                currentFileName.Content = System.IO.Path.GetFileName(files[0]);
+            }
+        }
+
+        private void btnHash_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnArduino_Click(object sender, RoutedEventArgs e)
+        {
+            if (!currentPort.IsOpen) return;
+
+            currentPort.Write(currentFile, 0, currentFile.Length);
         }
     }
 }
