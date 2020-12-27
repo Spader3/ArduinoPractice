@@ -10,20 +10,19 @@
         Closing="Window_Closing_1">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Label FontSize="20" HorizontalAlignment="Center" Margin="5">Перетащите файл сюда</Label>
-            <Canvas Width="100" Height="50" Background="LightGray" AllowDrop="True" Drop="Canvas_Drop"></Canvas>
+            <Label FontSize="25" HorizontalAlignment="Center">Расчет суммы на ардуино для файла примера</Label>
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <Label HorizontalAlignment="Center" FontSize="10">Сейчас загружен файл:</Label>
+                <Label HorizontalAlignment="Center" FontSize="10">Сейчас загружен файл:"ExampleTextFile.txt"</Label>
                 <Label Name="currentFileName"></Label>
             </StackPanel>
-            <Button x:Name="btnHash" Click="btnHash_Click" Width="150" Height="30" Margin="5">Рассчитать хэш сумму</Button>
+            <Button x:Name="btnHash" Click="btnHash_Click" Width="250" Height="30" Margin="5">Рассчитать хэш сумму на ПК</Button>
             <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
                 <Label HorizontalAlignment="Center" FontSize="10">Хэш-сумма:</Label>
                 <Label Name="hashSumm"></Label>
             </StackPanel>
-            <Button x:Name="btnArduino" Click="btnArduino_Click" Width="200" Height="30" Margin="5">Отправить файл на ардуино</Button>
+            <Button x:Name="btnArduino" Click="btnArduino_Click" Width="350" Height="30" Margin="5">Отправить файл и рассчитать хэш сумму на Arduino Nano</Button>
             <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
-                <Label HorizontalAlignment="Center" FontSize="10">Ответ от ардуино:</Label>
+                <Label HorizontalAlignment="Center" FontSize="10">Ответ от Arduino Nano:</Label>
                 <Label Name="arduinoResponse"></Label>
             </StackPanel>
         </StackPanel>
